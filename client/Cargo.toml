@@ -26,19 +26,5 @@ wasm-bindgen-futures = "0.4.32"
 js-sys = "0.3.59"
 
 [dependencies.web-sys]
-version = "0.3.58"
-features = [
-  "BinaryType",
-  "ErrorEvent",
-  "MessageEvent",
-  "WebSocket",
-  "MouseEvent",
-  "Window",
-  "Location",
-  "Document",
-  "Element",
-  "HtmlElement",
-  "HtmlDivElement",
-  "Node",
-  "CssStyleDeclaration",
-]
+version = "0.3.59"
+features = []
