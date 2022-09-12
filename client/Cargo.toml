@@ -11,13 +11,12 @@ opt-level = "s"
 crate-type = ["cdylib", "rlib"]
 
 [features]
-default = ["wee_alloc", "panic_hook", "logging"]
+default = ["panic_hook", "logging"]
 panic_hook = ["console_error_panic_hook"]
 logging = ["log", "console_log"]
 
 [dependencies]
 common = { path = "../common" }
-wee_alloc = { version = "0.4.5", optional = true }
 console_error_panic_hook = { version = "0.1.7", optional = true }
 log = { version = "0.4.17", optional = true }
 console_log = { version = "0.2.0", optional = true }
