@@ -9,7 +9,7 @@ Includes:
 - browser client,
 - [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) for client,
 - native client,
-- `common` library for sharing code between the above.
+- `common` library project for sharing code between the above.
 
 ## To template users
 
