@@ -30,7 +30,7 @@ Use shell scripts to format code, lint, build, run or clean:
 
 ## Dependencies
 
-This template uses following Rust crates developed by [me](https://github.com/zduny)
+This template uses following Rust crates developed by [me](https://github.com/zduny):
 
 [js-utils](https://github.com/zduny/js-utils) - various JavaScript related utilities.
 
