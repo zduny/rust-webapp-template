@@ -2,9 +2,14 @@
 /target
 /common/target
 /server/target
+/worker/target
 /client/target
 /client/pkg
-Cargo.lock
+/client-native/target
+/www/worker_wasm.js
+/www/worker_wasm_bg.wasm
 /www/client.js
 /www/client_bg.wasm
 app_server
+app_client
+Cargo.lock
