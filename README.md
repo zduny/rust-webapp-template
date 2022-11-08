@@ -32,11 +32,11 @@ Use shell scripts to format code, lint, build, run or clean:
 
 This template uses following Rust crates developed by [me](https://github.com/zduny):
 
-[js-utils](https://github.com/zduny/js-utils) - various JavaScript related utilities.
+- [js-utils](https://github.com/zduny/js-utils) - various JavaScript related utilities.
 
-[mezzenger](https://github.com/zduny/mezzenger) - message passing infrastructure for Rust.
+- [mezzenger](https://github.com/zduny/mezzenger) - message passing infrastructure for Rust.
 
-[kodec](https://github.com/zduny/kodec) - message encoding/decoding interface.
+- [kodec](https://github.com/zduny/kodec) - message encoding/decoding interface.
 
 Please consider donating to support their further development:
 
