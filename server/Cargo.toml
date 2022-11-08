@@ -12,3 +12,8 @@ tokio = { version = "1.21.2", features = ["full"] }
 tracing = "0.1.37"
 tracing-subscriber = "0.3.16"
 warp = "0.3.3"
+kodec = { version = "0.1.0", features = ["binary"] }
+mezzenger = { path = "../../mezzenger/mezzenger" }
+mezzenger-websocket = { path = "../../mezzenger/mezzenger-websocket", default-features = false, features = [
+    "warp"
+] }
