@@ -28,6 +28,13 @@ Use shell scripts to format code, lint, build, run or clean:
 ./clean.sh
 ```
 
+Native client isn't included in `run.sh` (and `build_and_run.sh`) script,
+to run native client (most likely in another terminal window/tab) type:
+
+```bash
+./app_client
+```
+
 ## Dependencies
 
 This template uses following Rust crates developed by [me](https://github.com/zduny):
@@ -41,3 +48,11 @@ This template uses following Rust crates developed by [me](https://github.com/zd
 Please consider donating to support their further development:
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/O5O31JYZ4)
+
+## See also
+
+[wasm-bindgen](https://github.com/rustwasm/wasm-bindgen)
+
+[web-sys](https://rustwasm.github.io/wasm-bindgen/web-sys/index.html)
+
+[js_sys](https://docs.rs/js-sys/latest/js_sys/)
