@@ -11,7 +11,17 @@ cd server
 cargo clippy
 cd ..
 
+echo "\nLinting worker..."
+cd worker
+cargo clippy --target=wasm32-unknown-unknown
+cd ..
+
 echo "\nLinting client..."
 cd client
+cargo clippy --target=wasm32-unknown-unknown
+cd ..
+
+echo "\nLinting native client..."
+cd client-native
 cargo clippy
 cd ..
