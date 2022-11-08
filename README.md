@@ -37,3 +37,7 @@ This template uses following Rust crates developed by [me](https://github.com/zd
 [mezzenger](https://github.com/zduny/mezzenger) - message passing infrastructure for Rust.
 
 [kodec](https://github.com/zduny/kodec) - message encoding/decoding interface.
+
+Please consider donating to support their further development:
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/O5O31JYZ4)
