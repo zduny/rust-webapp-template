@@ -9,14 +9,29 @@
 </head>
 
 <body>
+  <h1>Chat</h1>
+  <textarea id="text" rows="20" cols="80" readonly></textarea><br>
   <p>
-    Open developer tools to see "Hello World!" message in console.
+    <input type="text" id="input" size="50">
+    <input type="button" id="send" value="Send"><br>
+  </p>
+  <p>
+    <input type="number" id="number" min="0" value="0">
+    <input type="button" id="fibonacci" value="Fibonacci">
+    <input type="button" id="factorial" value="Factorial">
   </p>
   <script type="module">
-    import init from './client.js';
+    import init, { add_numbers } from './client.js';
 
     async function run() {
       await init();
+
+      // Note that you absolutely don't have to only use Rust to develop your client.
+      // You always have an option to develop most of it in HTML and JavaScript and 
+      // only use Rust wherever it's convenient using wasm-bindgen for interfacing
+      // between JavaScript and Rust:
+      const result = add_numbers(3, 5);
+      console.log("3 + 5 = " + result);
     }
 
     run();
