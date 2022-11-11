@@ -6,7 +6,7 @@ use kodec::binary::Codec;
 use lazy_static::lazy_static;
 use mezzenger::{Messages, Receive};
 use regex::{Captures, Regex};
-use rustyline_async::{Readline, SharedWriter};
+use rustyline_async::{Readline, ReadlineError, SharedWriter};
 use std::io::Write;
 use tokio::spawn;
 use tokio_tungstenite::connect_async;
@@ -70,70 +70,79 @@ async fn main() -> Result<()> {
     )?;
     writeln!(stdout, "Type 'n!' to calculate factorial on n.")?;
 
-    let mut stdout_clone = stdout.clone();
-    let mut message_stream = receiver.messages_with_error_callback(move |error| {
-        let _ = writeln!(
-            stdout_clone,
-            "error occurred while receiving message: {error}"
-        );
-    });
+    {
+        let mut stdout_clone = stdout.clone();
+        let mut message_stream = receiver.messages_with_error_callback(move |error| {
+            let _ = writeln!(
+                stdout_clone,
+                "error occurred while receiving message: {error}"
+            );
+        });
 
-    loop {
-        select! {
-            message = message_stream.next() => {
-                if let Some(message) = message {
-                    match message {
-                        server::Message::UserConnected { user_name } => {
-                            writeln!(stdout, "New user connected: <{user_name}>")?;
-                        },
-                        server::Message::UserDisconnected { user_name } => {
-                            writeln!(stdout, "User <{user_name}> left.")?;
-                        },
-                        server::Message::Message { user_name, content } => {
-                            writeln!(stdout, "<{user_name}> {content}")?;
-                        },
-                        _ => panic!("unexpected message received"),
-                    }
-                } else {
-                    writeln!(stdout, "Server disconnected.")?;
-                    writeln!(stdout, "Exiting...")?;
-                    break;
-                }
-            },
-            command = readline.readline().fuse() => match command {
-                Ok(line) => {
-                    let line = line.trim();
-                    if let Some(captures) = FIBONACCI_PATTERN.captures(line) {
-                        if let Some(number) = extract_number(&captures) {
-                            let stdout_clone = stdout.clone();
-                            spawn(async move { handle_fibonacci(stdout_clone, number).await.unwrap() });
-                            readline.add_history_entry(line.to_string());
-                        } else {
-                            let input = captures.get(1).unwrap().as_str();
-                            writeln!(stdout, "Error: {input} is not a positive integer.")?;
-                        }
-                    } else if let Some(captures) = FACTORIAL_PATTERN.captures(line) {
-                        if let Some(number) = extract_number(&captures) {
-                            let stdout_clone = stdout.clone();
-                            spawn(async move { handle_factorial(stdout_clone, number).await.unwrap(); });
-                            readline.add_history_entry(line.to_string());
-                        } else {
-                            let input = captures.get(1).unwrap().as_str();
-                            writeln!(stdout, "Error: {input} is not a non-negative integer.")?;
+        loop {
+            select! {
+                message = message_stream.next() => {
+                    if let Some(message) = message {
+                        match message {
+                            server::Message::UserConnected { user_name } => {
+                                writeln!(stdout, "New user connected: <{user_name}>")?;
+                            },
+                            server::Message::UserDisconnected { user_name } => {
+                                writeln!(stdout, "User <{user_name}> left.")?;
+                            },
+                            server::Message::Message { user_name, content } => {
+                                writeln!(stdout, "<{user_name}> {content}")?;
+                            },
+                            _ => panic!("unexpected message received"),
                         }
                     } else {
-                        let message = client::Message { content: line.to_string() };
-                        sender.send(&message).await?;
+                        writeln!(stdout, "Server disconnected.")?;
+                        writeln!(stdout, "Exiting...")?;
+                        break;
                     }
                 },
-                Err(error) => {
-                    writeln!(stdout, "Error occurred while handling command: {error}")?;
-                    writeln!(stdout, "Exiting...")?;
-                    break;
+                command = readline.readline().fuse() => match command {
+                    Ok(line) => {
+                        let line = line.trim();
+                        if let Some(captures) = FIBONACCI_PATTERN.captures(line) {
+                            if let Some(number) = extract_number(&captures) {
+                                let stdout_clone = stdout.clone();
+                                spawn(async move { handle_fibonacci(stdout_clone, number).await.unwrap() });
+                                readline.add_history_entry(line.to_string());
+                            } else {
+                                let input = captures.get(1).unwrap().as_str();
+                                writeln!(stdout, "Error: {input} is not a positive integer.")?;
+                            }
+                        } else if let Some(captures) = FACTORIAL_PATTERN.captures(line) {
+                            if let Some(number) = extract_number(&captures) {
+                                let stdout_clone = stdout.clone();
+                                spawn(async move { handle_factorial(stdout_clone, number).await.unwrap(); });
+                                readline.add_history_entry(line.to_string());
+                            } else {
+                                let input = captures.get(1).unwrap().as_str();
+                                writeln!(stdout, "Error: {input} is not a non-negative integer.")?;
+                            }
+                        } else {
+                            let message = client::Message { content: line.to_string() };
+                            sender.send(&message).await?;
+                        }
+                    },
+                    Err(ReadlineError::Eof | ReadlineError::Interrupted) => {
+                        writeln!(stdout, "Exiting...")?;
+                        break;
+                    },
+                    Err(error) => {
+                        writeln!(stdout, "Error occurred while handling command: {error}")?;
+                        writeln!(stdout, "Exiting...")?;
+                        break;
+                    },
                 },
-            },
+            }
         }
     }
+
+    drop(stdout);
+    let _ = readline.readline().await;
 
     Ok(())
 }
