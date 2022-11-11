@@ -17,12 +17,13 @@ Remember to update `README.md`, `LICENSE` and `Cargo.toml` files after creating 
 
 ## Development
 
-Use shell scripts to format code, lint, build, run or clean:
+Use shell scripts to format code, lint, build, test, run or clean:
 
 ```bash
 ./format.sh
 ./clippy.sh
 ./build.sh
+./test.sh
 ./run.sh
 ./build_and_run.sh
 ./clean.sh
