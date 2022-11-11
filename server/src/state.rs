@@ -1,4 +1,7 @@
-use std::{sync::atomic::{AtomicUsize, Ordering}, collections::HashMap};
+use std::{
+    collections::HashMap,
+    sync::atomic::{AtomicUsize, Ordering},
+};
 
 use common::message::server;
 use tokio::sync::mpsc::UnboundedSender;

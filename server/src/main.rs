@@ -85,7 +85,9 @@ async fn user_connected(web_socket: WebSocket, state: State) {
     };
     if sender.send(&init_message).await.is_ok() {
         info!("User <{name}> connected.");
-        let message = server::Message::UserConnected { user_name: name.clone() };
+        let message = server::Message::UserConnected {
+            user_name: name.clone(),
+        };
         for (&user_id, user) in state.read().await.users.iter() {
             if id != user_id {
                 let _ = user.sender.send(message.clone());
@@ -119,7 +121,10 @@ async fn user_connected(web_socket: WebSocket, state: State) {
 }
 
 async fn user_message(_id: usize, name: String, message: client::Message, state: &State) {
-    let message = server::Message::Message { user_name: name, content: message.content };
+    let message = server::Message::Message {
+        user_name: name,
+        content: message.content,
+    };
     for user in state.read().await.users.values() {
         let _ = user.sender.send(message.clone());
     }

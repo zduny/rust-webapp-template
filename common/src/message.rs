@@ -45,11 +45,7 @@ pub mod worker {
 
     #[derive(Debug, Clone, Serialize, Deserialize)]
     pub enum Message {
-        ResultFactorial {
-            output: BigUint,
-        },
-        ResultFibonacci {
-            output: BigUint,
-        },
+        ResultFactorial { output: BigUint },
+        ResultFibonacci { output: BigUint },
     }
 }
