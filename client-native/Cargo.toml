@@ -7,12 +7,17 @@ edition = "2021"
 
 [dependencies]
 common = { path = "../common" }
-anyhow = "1.0.66"
-clap = { version = "4.0.19", features = ["derive"] }
 futures = "0.3.25"
-url = "2.3.1"
 tokio = { version = "1.21.2", features = ["full"] }
 tokio-tungstenite = "0.17.2"
 kodec = { version = "0.1.0", features = ["binary"] }
 mezzenger = { path = "../../mezzenger/mezzenger" }
 mezzenger-websocket = { path = "../../mezzenger/mezzenger-websocket" }
+
+anyhow = "1.0.66"
+clap = { version = "4.0.19", features = ["derive"] }
+lazy_static = "1.4.0"
+regex = "1.7.0"
+url = "2.3.1"
+rustyline-async = "0.2.6"
+tokio-rayon = "2.1.0"
