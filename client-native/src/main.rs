@@ -75,7 +75,7 @@ async fn main() -> Result<()> {
         let mut message_stream = receiver.messages_with_error_callback(move |error| {
             let _ = writeln!(
                 stdout_clone,
-                "error occurred while receiving message: {error}"
+                "Error occurred while receiving message: {error}."
             );
         });
 
@@ -85,7 +85,7 @@ async fn main() -> Result<()> {
                     if let Some(message) = message {
                         match message {
                             server::Message::UserConnected { user_name } => {
-                                writeln!(stdout, "New user connected: <{user_name}>")?;
+                                writeln!(stdout, "New user connected: <{user_name}>.")?;
                             },
                             server::Message::UserDisconnected { user_name } => {
                                 writeln!(stdout, "User <{user_name}> left.")?;
@@ -111,7 +111,7 @@ async fn main() -> Result<()> {
                                 readline.add_history_entry(line.to_string());
                             } else {
                                 let input = captures.get(1).unwrap().as_str();
-                                writeln!(stdout, "Error: {input} is not a positive integer.")?;
+                                writeln!(stdout, "Error: {input} is not a non-negative integer.")?;
                             }
                         } else if let Some(captures) = FACTORIAL_PATTERN.captures(line) {
                             if let Some(number) = extract_number(&captures) {
@@ -124,7 +124,7 @@ async fn main() -> Result<()> {
                             }
                         } else {
                             let message = client::Message { content: line.to_string() };
-                            sender.send(&message).await?;
+                            sender.send(message).await?;
                         }
                     },
                     Err(ReadlineError::Eof | ReadlineError::Interrupted) => {
@@ -147,20 +147,20 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
-fn extract_number<'a>(captures: &'a Captures<'a>) -> Option<u128> {
+fn extract_number<'a>(captures: &'a Captures<'a>) -> Option<u64> {
     captures
         .get(1)
-        .and_then(|capture| capture.as_str().parse::<u128>().ok())
+        .and_then(|capture| capture.as_str().parse::<u64>().ok())
 }
 
-async fn handle_fibonacci(mut stdout: SharedWriter, number: u128) -> Result<()> {
+async fn handle_fibonacci(mut stdout: SharedWriter, number: u64) -> Result<()> {
     writeln!(stdout, "Calculating fibonacci({number})...")?;
     let result = tokio_rayon::spawn(move || common::fibonacci(number)).await;
-    writeln!(stdout, "factorial({number}) = {result}")?;
+    writeln!(stdout, "fibonacci({number}) = {result}")?;
     Ok(())
 }
 
-async fn handle_factorial(mut stdout: SharedWriter, number: u128) -> Result<()> {
+async fn handle_factorial(mut stdout: SharedWriter, number: u64) -> Result<()> {
     writeln!(stdout, "Calculating {number}!...")?;
     let result = tokio_rayon::spawn(move || common::factorial(number)).await;
     writeln!(stdout, "{number}! = {result}")?;
