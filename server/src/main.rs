@@ -83,7 +83,7 @@ async fn user_connected(web_socket: WebSocket, state: State) {
         user_name: name.clone(),
         connected_user_names,
     };
-    if sender.send(&init_message).await.is_ok() {
+    if sender.send(init_message).await.is_ok() {
         info!("User <{name}> connected.");
         let message = server::Message::UserConnected {
             user_name: name.clone(),
@@ -96,7 +96,7 @@ async fn user_connected(web_socket: WebSocket, state: State) {
 
         spawn(async move {
             while let Some(message) = user_receiver.next().await {
-                let result = sender.send(&message).await;
+                let result = sender.send(message).await;
                 if let Err(error) = result {
                     error!("Failed to send message to user: id: {id}, error: {error}.");
                 }
