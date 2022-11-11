@@ -38,14 +38,14 @@ pub mod worker {
 
         #[derive(Debug, Clone, Serialize, Deserialize)]
         pub enum Message {
-            CalculateFactorial { input: u128 },
-            CalculateFibonacci { index: u128 },
+            CalculateFactorial { input: u64 },
+            CalculateFibonacci { input: u64 },
         }
     }
 
     #[derive(Debug, Clone, Serialize, Deserialize)]
     pub enum Message {
-        ResultFactorial { output: BigUint },
-        ResultFibonacci { output: BigUint },
+        ResultFactorial { input: u64, output: BigUint },
+        ResultFibonacci { input: u64, output: BigUint },
     }
 }

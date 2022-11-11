@@ -5,7 +5,7 @@ use std::mem::replace;
 use num_bigint::BigUint;
 use num_traits::{One, Zero};
 
-pub fn fibonacci(n: u128) -> BigUint {
+pub fn fibonacci(n: u64) -> BigUint {
     let mut f0 = Zero::zero();
     let mut f1 = One::one();
     for _ in 0..n {
@@ -15,10 +15,10 @@ pub fn fibonacci(n: u128) -> BigUint {
     f0
 }
 
-pub fn factorial(n: u128) -> BigUint {
+pub fn factorial(n: u64) -> BigUint {
     let mut result = One::one();
     for i in 1..=n {
-        result = result * i;
+        result *= i;
     }
     result
 }
