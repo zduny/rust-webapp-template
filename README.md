@@ -11,6 +11,14 @@ Includes:
 - native client,
 - `common` library project for sharing code between the above.
 
+## How to use
+
+Use [cargo-generate](https://github.com/cargo-generate/cargo-generate):
+
+```bash
+cargo generate --git https://github.com/zduny/rust-webapp-template
+```
+
 ## To template users
 
 Remember to update `README.md`, `LICENSE` and `Cargo.toml` files after creating new project using this template. 
