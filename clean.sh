@@ -24,8 +24,8 @@ cargo clean
 cd ..
 
 cd www
-rm -f www/worker_wasm.js
-rm -f www/worker_wasm_bg.wasm
+rm -f worker_wasm.js
+rm -f worker_wasm_bg.wasm
 rm -f client.js
 rm -f client_bg.wasm
 cd ..
