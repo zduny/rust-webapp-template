@@ -11,6 +11,11 @@ Includes:
 - native client,
 - `common` library project for sharing code between the above.
 
+
+## Prerequisites
+
+To build the app [wasm-pack](https://rustwasm.github.io/wasm-pack) needs to be installed.
+
 ## How to use
 
 Use [cargo-generate](https://github.com/cargo-generate/cargo-generate):
