@@ -251,6 +251,8 @@ pub fn add_numbers(a: i32, b: i32) -> i32 {
 
 #[cfg(test)]
 mod tests {
+    wasm_bindgen_test::wasm_bindgen_test_configure!(run_in_browser);
+
     use wasm_bindgen_test::wasm_bindgen_test;
 
     use crate::add_numbers;

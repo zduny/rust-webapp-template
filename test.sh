@@ -13,12 +13,12 @@ cd ..
 
 echo "\nTesting worker..."
 cd worker
-cargo test --target wasm32-unknown-unknown
+wasm-pack test --headless --chrome
 cd ..
 
 echo "\nTesting client..."
 cd client
-cargo test --target wasm32-unknown-unknown
+wasm-pack test --headless --chrome
 cd ..
 
 echo "\nTesting native client..."
