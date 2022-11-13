@@ -49,6 +49,12 @@ to run native client (most likely in another terminal window/tab) type:
 ./app_client
 ```
 
+### Windows 
+
+Above scripts are available in Batch file form in `windows` directory.
+
+**NOTE**: They have to be run from said `windows` directory, don't move them to project root directory before running them.
+
 ## Dependencies
 
 This template uses following Rust crates developed by [me](https://github.com/zduny):
