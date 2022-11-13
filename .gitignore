@@ -11,5 +11,7 @@
 /www/client.js
 /www/client_bg.wasm
 app_server
+app_server.exe
 app_client
+app_client.exe
 Cargo.lock
