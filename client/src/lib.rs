@@ -209,10 +209,14 @@ pub async fn main_client() -> Result<(), JsValue> {
             write_line(&format!("Your name: <{user_name}>."));
 
             if !connected_user_names.is_empty() {
-                write_line("Connected users:");
-                for user_name in connected_user_names.iter() {
-                    write_line(&format!("<{user_name}>"));
-                }
+                write_line(&format!(
+                    "Other connected users: {}.",
+                    connected_user_names
+                        .iter()
+                        .map(|user| format!("<{user}>"))
+                        .collect::<Vec<String>>()
+                        .join(", ")
+                ));
             }
         }
         _ => panic!("unexpected message received"),

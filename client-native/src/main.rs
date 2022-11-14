@@ -53,10 +53,14 @@ async fn main() -> Result<()> {
             println!("Your name: <{user_name}>.");
 
             if !connected_user_names.is_empty() {
-                println!("Connected users:");
-                for user_name in connected_user_names.iter() {
-                    println!("<{user_name}>");
-                }
+                println!(
+                    "Other connected users: {}.",
+                    connected_user_names
+                        .iter()
+                        .map(|user| format!("<{user}>"))
+                        .collect::<Vec<String>>()
+                        .join(", ")
+                );
             }
         }
         _ => panic!("unexpected message received"),
