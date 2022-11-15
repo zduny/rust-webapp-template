@@ -28,6 +28,10 @@ cargo generate --git https://github.com/zduny/rust-webapp-template
 
 Remember to update `README.md`, `LICENSE` and `Cargo.toml` files after creating new project using this template. 
 
+## Example
+
+Slightly simpler and more colorful example is available [here](https://github.com/zduny/balls/).
+
 ## Development
 
 Use shell scripts to format code, lint, build, test, run or clean:
