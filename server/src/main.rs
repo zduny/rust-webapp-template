@@ -6,7 +6,7 @@ use anyhow::Result;
 use common::message::{client, server};
 use futures::{SinkExt, StreamExt};
 use kodec::binary::Codec;
-use mezzenger_websocket::warp::{Receiver, Sender};
+use mezzenger_websocket::warp::Transport;
 use tokio::{
     signal::ctrl_c,
     spawn,
@@ -59,11 +59,9 @@ async fn main() -> Result<()> {
 }
 
 async fn user_connected(web_socket: WebSocket, state: State) {
-    let (web_socket_sender, web_socket_receiver) = web_socket.split();
-
     let codec = Codec::default();
-    let mut sender = Sender::<_, Codec, server::Message>::new(web_socket_sender, codec);
-    let mut receiver = Receiver::<_, Codec, client::Message>::new(web_socket_receiver, codec);
+    let (mut sender, mut receiver) =
+        Transport::<_, Codec, client::Message, server::Message>::new(web_socket, codec).split();
 
     let (user_sender, user_receiver) = unbounded_channel();
     let mut user_receiver = UnboundedReceiverStream::new(user_receiver);

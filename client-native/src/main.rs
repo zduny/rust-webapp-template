@@ -5,6 +5,7 @@ use futures::{select, FutureExt, SinkExt, StreamExt};
 use kodec::binary::Codec;
 use lazy_static::lazy_static;
 use mezzenger::{Messages, Receive};
+use mezzenger_websocket::Transport;
 use regex::{Captures, Regex};
 use rustyline_async::{Readline, ReadlineError, SharedWriter};
 use std::io::Write;
@@ -34,14 +35,9 @@ async fn main() -> Result<()> {
     println!("Connecting to server...");
     let url = Url::parse(&args.url)?;
     let (web_socket, _) = connect_async(url).await?;
-
-    let (web_socket_sender, web_socket_receiver) = web_socket.split();
     let codec = Codec::default();
-    let mut sender =
-        { mezzenger_websocket::Sender::<_, Codec, client::Message>::new(web_socket_sender, codec) };
-    let mut receiver = {
-        mezzenger_websocket::Receiver::<_, Codec, server::Message>::new(web_socket_receiver, codec)
-    };
+    let (mut sender, mut receiver) =
+        Transport::<_, Codec, server::Message, client::Message>::new(web_socket, codec).split();
     println!("Connected.");
 
     let init_message = receiver.receive().await?;
@@ -145,8 +141,7 @@ async fn main() -> Result<()> {
         }
     }
 
-    drop(stdout);
-    let _ = readline.readline().await;
+    readline.flush()?;
 
     Ok(())
 }
