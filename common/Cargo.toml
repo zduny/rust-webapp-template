@@ -6,7 +6,7 @@ license = "MIT"
 edition = "2021"
 
 [dependencies]
-serde = { version = "1.0.147", features = ["derive"] }
+serde = { version = "1.0.151", features = ["derive"] }
 
 num-traits = "0.2.15"
 num-bigint = { version = "0.4.3", features = ["serde"] }
