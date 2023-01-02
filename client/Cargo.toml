@@ -18,9 +18,9 @@ wasm-bindgen-futures = "0.4.33"
 futures = "0.3.25"
 js-utils = "0.1.3"
 kodec = { version = "0.1.0", features = ["binary"] }
-mezzenger = "0.1.2"
-mezzenger-websocket = "0.2.3"
-mezzenger-webworker = "0.1.1"
+mezzenger = "0.1.3"
+mezzenger-websocket = "0.2.4"
+mezzenger-webworker = "0.1.2"
 web-sys = { version = "0.3.60", features = [
     "WebSocket",
     "Worker",
