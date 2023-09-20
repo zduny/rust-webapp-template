@@ -1,5 +1,7 @@
 # {{project-name}}
 
+[![Test Status](https://github.com/zduny/rust-webapp-template/actions/workflows/rust.yml/badge.svg)](https://github.com/zduny/rust-webapp-template/actions)
+
 Rust web application template.
 
 Implements a simple chat application.
