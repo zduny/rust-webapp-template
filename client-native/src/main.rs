@@ -7,7 +7,7 @@ use lazy_static::lazy_static;
 use mezzenger::{Messages, Receive};
 use mezzenger_websocket::Transport;
 use regex::{Captures, Regex};
-use rustyline_async::{Readline, ReadlineError, SharedWriter};
+use rustyline_async::{Readline, ReadlineEvent, SharedWriter};
 use std::io::Write;
 use tokio::spawn;
 use tokio_tungstenite::connect_async;
@@ -102,34 +102,38 @@ async fn main() -> Result<()> {
                     }
                 },
                 command = readline.readline().fuse() => match command {
-                    Ok(line) => {
-                        let line = line.trim();
-                        if let Some(captures) = FIBONACCI_PATTERN.captures(line) {
-                            if let Some(number) = extract_number(&captures) {
-                                let stdout_clone = stdout.clone();
-                                spawn(async move { handle_fibonacci(stdout_clone, number).await.unwrap() });
-                                readline.add_history_entry(line.to_string());
-                            } else {
-                                let input = captures.get(1).unwrap().as_str();
-                                writeln!(stdout, "Error: {input} is not a non-negative integer.")?;
-                            }
-                        } else if let Some(captures) = FACTORIAL_PATTERN.captures(line) {
-                            if let Some(number) = extract_number(&captures) {
-                                let stdout_clone = stdout.clone();
-                                spawn(async move { handle_factorial(stdout_clone, number).await.unwrap(); });
-                                readline.add_history_entry(line.to_string());
-                            } else {
-                                let input = captures.get(1).unwrap().as_str();
-                                writeln!(stdout, "Error: {input} is not a non-negative integer.")?;
-                            }
-                        } else {
-                            let message = client::Message { content: line.to_string() };
-                            sender.send(message).await?;
+                    Ok(event) => {
+                        match event {
+                            ReadlineEvent::Line(line) => {
+                                let line = line.trim();
+                                if let Some(captures) = FIBONACCI_PATTERN.captures(line) {
+                                    if let Some(number) = extract_number(&captures) {
+                                        let stdout_clone = stdout.clone();
+                                        spawn(async move { handle_fibonacci(stdout_clone, number).await.unwrap() });
+                                        readline.add_history_entry(line.to_string());
+                                    } else {
+                                        let input = captures.get(1).unwrap().as_str();
+                                        writeln!(stdout, "Error: {input} is not a non-negative integer.")?;
+                                    }
+                                } else if let Some(captures) = FACTORIAL_PATTERN.captures(line) {
+                                    if let Some(number) = extract_number(&captures) {
+                                        let stdout_clone = stdout.clone();
+                                        spawn(async move { handle_factorial(stdout_clone, number).await.unwrap(); });
+                                        readline.add_history_entry(line.to_string());
+                                    } else {
+                                        let input = captures.get(1).unwrap().as_str();
+                                        writeln!(stdout, "Error: {input} is not a non-negative integer.")?;
+                                    }
+                                } else {
+                                    let message = client::Message { content: line.to_string() };
+                                    sender.send(message).await?;
+                                }
+                            },
+                            ReadlineEvent::Eof | ReadlineEvent::Interrupted => {
+                                writeln!(stdout, "Exiting...")?;
+                                break;
+                            },
                         }
-                    },
-                    Err(ReadlineError::Eof | ReadlineError::Interrupted) => {
-                        writeln!(stdout, "Exiting...")?;
-                        break;
                     },
                     Err(error) => {
                         writeln!(stdout, "Error occurred while handling command: {error}")?;
